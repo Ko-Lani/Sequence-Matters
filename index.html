@@ -499,13 +499,7 @@
         <h2 class="title is-3">Method</h2>
         <div class="content has-text-justified">
           <p>
-            ProPainter comprises three key components: recurrent flow completion, dual-domain propagation, and mask-guided
-            sparse Transformer. First, we employ a highly efficient recurrent flow completion network to complete the corrupted flow
-            fields. We then perform propagation in both image and feature domains, which are jointly trained. This approach enables us to
-            explore correspondences from both global and local temporal frames, resulting in more reliable and effective propagation. The
-            subsequent mask-guided sparse Transformer blocks refine the propagated features using spatiotemporal attention, aided by a
-            sparse strategy that considers only a subset of the tokens. This enhances efficiency and reduces memory consumption, while
-            maintaining performance.
+            Our method comprises adaptive-length sequencing, which organizes unordered low-resolution (LR) images into structured "video-like" subsequences. Starting from each image as an initial frame, the algorithm incrementally selects subsequent frames based on similarity measures, such as pose or visual features, until a predefined threshold is met. This process creates multiple subsequences of varying lengths that maintain smooth transitions between adjacent frames. These ordered subsequences are then fed into a pre-trained video super-resolution (VSR) model, which utilizes the temporal coherence between frames to upsample the LR sequences into high-resolution (HR) images. The resulting HR images are subsequently used to train a 3D Gaussian Splatting (3DGS) model, ensuring high-fidelity 3D reconstruction with enhanced spatial and multi-view consistency.
           </p>
           <div class="column">
             <img src="./assets/images/SM_pipeline.jpg" />
