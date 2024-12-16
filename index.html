@@ -40,23 +40,32 @@
 </head>
 <body>
 
-<section class="hero">
+<!-- <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop head">
       <div class="columns is-centered">
         <div class="column has-text-centered head">
-          <!-- <div class="logo">
-          <a href="index.html">
-            <img src="./assets/images/logo4.png" onmouseover="this.src='./assets/images/logo4.png';" onmouseout="this.src='./assets/images/logo4.png';">
-          </a>
-          </div> -->
-
           <div class="logo" style="margin-bottom: 0px;">
             <a href="index.html">
               <img src="./assets/images/logo5.png" 
                    onmouseover="this.src='./assets/images/logo6.png';" 
                    onmouseout="this.src='./assets/images/logo_SM.png';"
                    style="border-radius: 0; width: 400px; height: auto;">
+            </a>
+          </div>
+          <br style="display: none;"> -->
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop head">
+      <div class="columns is-centered">
+        <div class="column has-text-centered head">
+          <!-- 로고 영역 -->
+          <div class="logo" style="margin-bottom: 0px;">
+            <a href="index.html">
+              <img src="./assets/images/full_logo.gif" 
+                    alt="Logo"
+                    style="border-radius: 0; width: 400px; height: auto;">
             </a>
           </div>
           <br style="display: none;">
@@ -152,7 +161,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_chair.mp4" type="video/mp4">
               </video>
@@ -169,7 +178,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left"> &nbsp;&nbsp;LR&nbsp;&nbsp;  </div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_drums.mp4" type="video/mp4">
               </video>
@@ -187,7 +196,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_ficus.mp4" type="video/mp4">
               </video>
@@ -205,7 +214,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_hotdog.mp4" type="video/mp4">
               </video>
@@ -223,7 +232,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_lego.mp4" type="video/mp4">
               </video>
@@ -241,7 +250,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_materials.mp4" type="video/mp4">
               </video>
@@ -259,7 +268,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_mic.mp4" type="video/mp4">
               </video>
@@ -277,7 +286,7 @@
         <div class="item">
           <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
             <div class="video">
-              <div class="desc_left">Bicubic</div>
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
               <video muted autoplay="autoplay" loop="loop" width="100%">
                 <source src="./assets/video_blender/bicubic/bicubic_ship.mp4" type="video/mp4">
               </video>
@@ -294,8 +303,11 @@
       </div>
     </div>
   </div>
-</section>
 
+  <p class="has-text-centered" style="margin: 20px auto; font-size: 1.1rem; color: #555; max-width: 730px;">
+    <strong>LR</strong> refers to low-resolution training, and <strong>Ours</strong> represents the x4 upsampled image. It was upsampled using our ALS (Adaptive Length Sequencing) and trained with 3DGS.
+  </p>
+</section>
 
 
 
@@ -557,19 +569,19 @@
                     <td class="numeric">0.0760</td>
                   </tr>
                   <tr>
-                    <td>ZS-SRT</td>
+                    <td>ZS-SRT&dagger;</td>
                     <td class="numeric">29.69</td>
                     <td class="numeric">0.9290</td>
                     <td class="numeric">0.0690</td>
                   </tr>
                   <tr>
-                    <td>CROP</td>
+                    <td>CROP&dagger;</td>
                     <td class="numeric">30.71</td>
                     <td class="numeric">0.9459</td>
                     <td class="numeric">0.0671</td>
                   </tr>
                   <tr>
-                    <td>FastSR-NeRF</td>
+                    <td>FastSR-NeRF&dagger;</td>
                     <td class="numeric">30.47</td>
                     <td class="numeric">0.9440</td>
                     <td class="numeric">0.0750</td>
@@ -581,19 +593,19 @@
                     <td class="numeric">0.1226</td>
                   </tr>
                   <tr>
-                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS</a></td>
+                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS&dagger;</a></td>
                     <td class="numeric">30.83</td>
                     <td class="numeric">0.9480</td>
                     <td class="numeric">0.0560</td>
                   </tr>
                   <tr>
-                    <td><a href="https://chchnii.github.io/GaussianSR/">Gaussian-SR</a></td>
+                    <td><a href="https://chchnii.github.io/GaussianSR/">Gaussian-SR&dagger;</a></td>
                     <td class="numeric">28.37</td>
                     <td class="numeric">0.9240</td>
                     <td class="numeric">0.0870</td>
                   </tr>
                   <tr>
-                    <td><a href="https://supergaussian.github.io/">SuperGaussian</a></td>
+                    <td><a href="https://supergaussian.github.io/">SuperGaussian&dagger;</a></td>
                     <td class="numeric">28.44</td>
                     <td class="numeric">0.9459</td>
                     <td class="numeric">0.0670</td>
@@ -632,7 +644,7 @@
                     <td class="numeric">0.2873</td>
                   </tr>
                   <tr>
-                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS</a></td>
+                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS&dagger;</a></td>
                     <td class="numeric">26.88</td>
                     <td class="numeric">0.7670</td>
                     <td class="numeric">0.2860</td>
@@ -648,7 +660,8 @@
             </div>
           </div>
           <p>
-            Something
+            The numbers marked with &dagger; are sourced from their respective paper, as
+            the code is not available at this time.
           </p>
         </div>
       </div>
@@ -657,42 +670,40 @@
 </section>
 
 
-
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column">
         <h2 class="title is-3">Qualitative Results</h2>
+
+        <!-- 버튼 추가 -->
+        <div class="buttons is-centered" style="margin-bottom: 20px;">
+          <button class="button" 
+                  onclick="showImage('nerf1')" 
+                  style="background-color: #ee6657; color: black; border: 1px solid black;">
+            <strong>NeRF Synthetic 1</strong>
+          </button>
+          <button class="button" 
+                  onclick="showImage('nerf2')" 
+                  style="background-color: #e67e22; color: black; border: 1px solid black;">
+            <strong>NeRF Synthetic 2</strong>
+          </button>
+          <button class="button" 
+                  onclick="showImage('mip360')" 
+                  style="background-color: #f1c40f; color: black; border: 1px solid black;">
+            <strong>Mip-NeRF 360</strong>
+          </button>
+        </div>
+
+        <!-- 이미지 표시 영역 -->
         <div class="content has-text-justified">
-          <!-- First Image -->
-          <div class="columns is-centered" style="margin-bottom: 30px;">
-            <div class="column is-full">
-              <figure>
-                <img src="./assets/images/appendix_qualitative_blender.jpg" 
-                     alt="Appendix Qualitative Blender" 
-                     style="width: 100%;">
-              </figure>
-            </div>
-          </div>
-
-          <!-- Second Image -->
-          <div class="columns is-centered" style="margin-bottom: 30px;">
-            <div class="column is-full">
-              <figure>
-                <img src="./assets/images/baseline_blender.jpg" 
-                     alt="Baseline Blender" 
-                     style="width: 100%;">
-              </figure>
-            </div>
-          </div>
-
-          <!-- Third Image -->
           <div class="columns is-centered">
             <div class="column is-full">
               <figure>
-                <img src="./assets/images/baseline_mip360.jpg" 
-                     alt="Baseline Mip360" 
-                     style="width: 100%;">
+                <img id="result-image" 
+                     src="./assets/images/appendix_qualitative_blender.jpg" 
+                     alt="Result Image" 
+                     style="width: 100%; border-radius: 0px;">
               </figure>
             </div>
           </div>
@@ -702,11 +713,27 @@
   </div>
 </section>
 
+<script>
+  // 이미지 경로를 저장한 객체
+  const imageSources = {
+    nerf1: "./assets/images/appendix_qualitative_blender.jpg",
+    nerf2: "./assets/images/baseline_blender.jpg",
+    mip360: "./assets/images/baseline_mip360.jpg"
+  };
 
+  // 이미지 표시 함수
+  function showImage(key) {
+    const resultImage = document.getElementById("result-image");
+    resultImage.src = imageSources[key];
 
-
-
-
+    // Mip-NeRF 360 선택 시 width 80%, 아니면 100%
+    if (key === 'mip360') {
+      resultImage.style.width = "85%";
+    } else {
+      resultImage.style.width = "100%";
+    }
+  }
+</script>
 
 
 
@@ -714,8 +741,12 @@
 <section class="section">
   <div class="container is-max-desktop">
     <h2 class="title is-3 has-text-centered">Baseline Comparison</h2>
+    <p class="has-text-left" style="margin-bottom: 20px; font-size: 1.1rem; color: #555;">
+      To compare baselines, select a <strong>Baseline + Object</strong> pair from the dropdown menu.<br> 
+      Then, choose a <strong>Region</strong> (e.g., center or corner) to view and compare the zoomed-in area for each baseline.
+    </p>
     <div class="columns is-centered">
-      <div class="column is-half">
+      <div class="column is-one-third">
         <label class="label">Select Baseline:</label>
         <div class="select is-fullwidth">
           <select id="baseline-selector">
@@ -726,12 +757,12 @@
           </select>
         </div>
       </div>
-      <div class="column is-half">
+      <div class="column is-one-third">
         <label class="label">Select Object:</label>
         <div class="select is-fullwidth">
           <select id="object-selector">
-            <option value="chair">Chair</option>
             <option value="drums">Drums</option>
+            <option value="chair">Chair</option>
             <option value="ficus">Ficus</option>
             <option value="hotdog">Hotdog</option>
             <option value="lego">Lego</option>
@@ -741,18 +772,39 @@
           </select>
         </div>
       </div>
+      <div class="column is-one-third">
+        <label class="label">Select Region:</label>
+        <div class="select is-fullwidth">
+          <select id="region-selector">
+            <option value="center">Center</option>
+            <option value="up-left">Up-Left</option>
+            <option value="up-right">Up-Right</option>
+            <option value="down-left">Down-Left</option>
+            <option value="down-right">Down-Right</option>
+          </select>
+        </div>
+      </div>
     </div>
+
     <div class="columns is-centered">
       <div class="column">
         <div class="videos-comparison">
-          <video id="baseline-video" muted autoplay loop width="49%" controls></video>
-          <video id="ours-video" muted autoplay loop width="49%" controls></video>
+          <video id="baseline-video" class="hidden-video" muted autoplay loop width="49%" controls></video>
+          <video id="ours-video" class="hidden-video" muted autoplay loop width="49%" controls></video>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="cropped-videos">
+          <canvas id="baseline-canvas" width="500" height="500"></canvas>
+          <canvas id="ours-canvas" width="500" height="500"></canvas>
         </div>
       </div>
     </div>
   </div>
 </section>
-
 
 <style>
   .videos-comparison {
@@ -760,39 +812,60 @@
     justify-content: space-between;
     align-items: center;
     gap: 1%;
+    position: relative;
   }
-  video {
+
+  .cropped-videos {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1%;
+    margin-top: 20px;
+  }
+
+  .hidden-video {
+    display: none; /* 특정 비디오만 숨김 */
+  }
+
+  canvas {
     border: 1px solid #ccc;
     border-radius: 8px;
+  }
+
+  .highlight-box {
+    position: absolute;
+    border: 2px solid red;
+    pointer-events: none;
   }
 </style>
 
 <script>
   const baselineSelector = document.getElementById("baseline-selector");
   const objectSelector = document.getElementById("object-selector");
+  const regionSelector = document.getElementById("region-selector");
   const baselineVideo = document.getElementById("baseline-video");
   const oursVideo = document.getElementById("ours-video");
+  const baselineCanvas = document.getElementById("baseline-canvas");
+  const oursCanvas = document.getElementById("ours-canvas");
+  const baselineCtx = baselineCanvas.getContext("2d");
+  const oursCtx = oursCanvas.getContext("2d");
 
-  // SuperGaussian에서 제외할 옵션
   const excludedObjects = {
     SuperGaussian: ["lego", "materials"]
   };
 
-  // 모든 가능한 객체 옵션
-  const allObjects = [
-    "chair", "drums", "ficus", "hotdog", "lego", "materials", "mic", "ship"
+  const allObjects = [ 
+    "drums", "lego", "ficus", "mic", "materials", "chair", "hotdog", "ship"
   ];
 
   function updateObjectOptions() {
     const baseline = baselineSelector.value;
     const excludeList = excludedObjects[baseline] || [];
 
-    // 기존 옵션 제거
     while (objectSelector.options.length > 0) {
       objectSelector.remove(0);
     }
 
-    // 새로운 옵션 추가
     allObjects.forEach(object => {
       if (!excludeList.includes(object)) {
         const option = document.createElement("option");
@@ -802,28 +875,26 @@
       }
     });
 
-    // 첫 번째 옵션을 기본값으로 설정
     objectSelector.selectedIndex = 0;
-    updateVideos(); // 비디오 업데이트 호출
+    updateVideos();
   }
 
   function updateVideos() {
     const baseline = baselineSelector.value;
     const object = objectSelector.value;
 
-    // 비디오 소스 설정
     baselineVideo.src = `./assets/video_blender/${baseline}/${baseline}_${object}.mp4`;
-    oursVideo.src = `./assets/video_blender/ours/ours_${object}.mp4`;
+    oursVideo.src = `./assets/video_blender/ours_10fps/ours_${object}.mp4`;
 
-    // 비디오 로드
     baselineVideo.load();
     oursVideo.load();
+
     baselineVideo.onloadedmetadata = synchronizeVideos;
     oursVideo.onloadedmetadata = synchronizeVideos;
   }
 
   function synchronizeVideos() {
-    const tolerance = 0.05; // 50ms 허용 오차
+    const tolerance = 0.05;
     let syncing = false;
 
     function checkSync() {
@@ -841,44 +912,64 @@
       }
     }
 
-    // 비디오 재생
     baselineVideo.play();
     oursVideo.play();
 
-    // 동기화 이벤트 추가
     baselineVideo.addEventListener("timeupdate", checkSync);
     oursVideo.addEventListener("timeupdate", checkSync);
-
-    // Pause/Play 동기화
-    [baselineVideo, oursVideo].forEach(video => {
-      video.addEventListener("pause", () => {
-        baselineVideo.pause();
-        oursVideo.pause();
-      });
-      video.addEventListener("play", () => {
-        baselineVideo.play();
-        oursVideo.play();
-      });
-    });
   }
 
-  // 베이스라인 변경 시 객체 선택지 업데이트
+  function drawHighlightBox(ctx, region, video, canvas) {
+    if (video.readyState < 2) return;
+
+    const width = video.videoWidth;
+    const height = video.videoHeight;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    let [x, y, boxWidth, boxHeight] = [0, 0, width / 2, height / 2];
+
+    switch (region) {
+      case "up-left":
+        [x, y] = [0, 0];
+        break;
+      case "up-right":
+        [x, y] = [width / 2, 0];
+        break;
+      case "down-left":
+        [x, y] = [0, height / 2];
+        break;
+      case "down-right":
+        [x, y] = [width / 2, height / 2];
+        break;
+      case "center":
+        [x, y] = [width / 4, height / 4];
+        boxWidth = width / 2;
+        boxHeight = height / 2;
+        break;
+    }
+
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.drawImage(video, x, y, boxWidth, boxHeight, 0, 0, canvasWidth, canvasHeight);
+  }
+
+  function updateHighlightedRegion() {
+    const region = regionSelector.value;
+
+    drawHighlightBox(baselineCtx, region, baselineVideo, baselineCanvas);
+    drawHighlightBox(oursCtx, region, oursVideo, oursCanvas);
+
+    requestAnimationFrame(updateHighlightedRegion);
+  }
+
   baselineSelector.addEventListener("change", updateObjectOptions);
   objectSelector.addEventListener("change", updateVideos);
+  regionSelector.addEventListener("change", updateHighlightedRegion);
 
-  // 초기 상태 설정
+  baselineVideo.addEventListener("play", () => requestAnimationFrame(updateHighlightedRegion));
+  oursVideo.addEventListener("play", () => requestAnimationFrame(updateHighlightedRegion));
+
   updateObjectOptions();
 </script>
-
-
-
-
-
-
-
-
-
-
 
 
 
