@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Sequence Matters: Harnessing Video Models in 3D Super-Resolution">
+  <meta name="keywords" content="Sequence Matters, 3D Super-Resolution, Video Super-Resolution, Novel View Synthesis, Super-Resolution">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ProPainter for Video Inpainting</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+<!--   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+
+  </script> -->
+  <style>
+  .hr {width: 100%; height: 1px; margin: 48px 0; background-color: #d6dbdf;}
+  </style>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/bulma.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./assets/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./assets/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="./assets/css/index.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+
+  <!-- custom css file  -->
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/twentytwenty.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop head">
+      <div class="columns is-centered">
+        <div class="column has-text-centered head">
+          <!-- <div class="logo">
+          <a href="index.html">
+            <img src="./assets/images/logo4.png" onmouseover="this.src='./assets/images/logo4.png';" onmouseout="this.src='./assets/images/logo4.png';">
+          </a>
+          </div> -->
+
+          <div class="logo" style="margin-bottom: 0px;">
+            <a href="index.html">
+              <img src="./assets/images/logo5.png" 
+                   onmouseover="this.src='./assets/images/logo6.png';" 
+                   onmouseout="this.src='./assets/images/logo_SM.png';"
+                   style="border-radius: 0; width: 400px; height: auto;">
+            </a>
+          </div>
+          <br style="display: none;">
+          
+          <h1 class="title is-2 publication-title" style="margin-top: 2px; margin-bottom: 20px;">
+            <span class="depth">Sequence Matters</span>
+          </h1>
+          <h2 class="title is-3 publication-title" style="margin-top: 5px; margin-bottom: 5px;">
+            Harnessing Video Models in 3D Super-Resolution
+          </h2>
+          
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+             Hyun-kyu Ko*</a><sup>1</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block">
+              Dongheok Park*</a><sup>1</sup>,&nbsp;&nbsp;</span>
+            <span class="author-block">
+              Youngin Park</a><sup>2</sup>,&nbsp;&nbsp;</span> 
+            <span class="author-block">
+              Byeonghyeon Lee</a><sup>1</sup>,</span>
+            <span class="author-block">
+             Juhee Han</a><sup>1</sup>,</span>
+            <span class="author-block">
+                <a href="https://silverbottlep.github.io/">Eunbyung Park</a><sup>1</sup> </span>
+            <span class="author-block">
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Sungkyunkwan University</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="author-block"><sup>2</sup>Samsung Electorics</span>
+          </div>
+
+          <div class="is-size-5">
+            <p>* Equal contribution</p>
+          </div>
+
+          <div class="is-size-4 publication-authors">
+            <span class="author-block" style="font-weight: bold;"><strong>AAAI 2025</strong></span>
+          </div>
+
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <!-- <span class="link-block">
+                <a href="./xx.pdf" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span> -->
+              <!-- arXiv Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2309.03897" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+
+              <!-- Code Link. -->
+              <span class="link-block"> 
+                <a href="https://github.com/DHPark98/SequenceMatters" target="_blank"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- First row -->
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h3 class="title is-5 publication-title" style="margin-bottom: 10px;">NeRF Synthetic Dataset</h3>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_chair.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_chair.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_drums.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_drums.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_ficus.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_ficus.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_hotdog.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_hotdog.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_lego.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_lego.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_materials.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_materials.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_mic.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_mic.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">Bicubic</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_ship.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_ship.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item');
+  
+    items.forEach(item => {
+      const pauseButton = item.querySelector('.pause');
+      const fullButton = item.querySelector('.full');
+      const videos = item.querySelectorAll('video');
+  
+      if (pauseButton) {
+        pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+        pauseButton.style.backgroundSize = "cover";
+        pauseButton.style.backgroundRepeat = "no-repeat";
+        pauseButton.style.backgroundPosition = "center";
+  
+        pauseButton.addEventListener('mouseenter', () => {
+          pauseButton.style.cursor = 'pointer';
+        });
+  
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.style.backgroundImage.includes('play.png');
+          if (isPaused) {
+            pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            videos.forEach(video => video.play());
+          } else {
+            pauseButton.style.backgroundImage = "url('./assets/images/play.png')";
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+  
+      if (fullButton) {
+        fullButton.style.backgroundImage = "url('./assets/images/full.png')";
+        fullButton.style.backgroundSize = "cover";
+        fullButton.style.backgroundRepeat = "no-repeat";
+        fullButton.style.backgroundPosition = "center";
+        fullButton.addEventListener('mouseenter', () => {
+          fullButton.style.cursor = 'pointer';
+        });
+  
+        fullButton.addEventListener('click', () => {
+          const container = item;
+          if (container) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+              container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+      root: null,
+      threshold: 0.1,
+    };
+    
+    const items = document.querySelectorAll(".item");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const videos = entry.target.querySelectorAll("video");
+        const pauseButton = entry.target.querySelector(".pause");
+  
+        if (entry.isIntersecting) {
+          videos.forEach((video) => {
+            if (video.hasAttribute("data-src") && !video.src) {
+              video.src = video.getAttribute("data-src");
+              video.removeAttribute("data-src");
+            }
+            if (video.paused) {
+              video.play();
+              pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            }
+          });
+        } else {
+          videos.forEach((video) => {
+            if (!video.paused) {
+              video.pause();
+            }
+          });
+        }
+      });
+    }, observerOptions);
+  
+    items.forEach((item) => observer.observe(item));
+  });
+</script>
+
+<script>
+  const containers = document.querySelectorAll('.twentytwenty-container');
+  containers.forEach((container) => {
+    const videos = container.querySelectorAll('video');
+    
+    if (videos.length === 2) {
+      const video1 = videos[0];
+      const video2 = videos[1];
+
+      let video1Loaded = false;
+      let video2Loaded = false;
+
+      video1.addEventListener('loadeddata', () => {
+        video1Loaded = true;
+        syncVideos();
+      });
+
+      video2.addEventListener('loadeddata', () => {
+        video2Loaded = true;
+        syncVideos();
+      });
+
+      function syncVideos() {
+        if (video1Loaded && video2Loaded) {
+          video1.currentTime = 0;
+          video2.currentTime = 0;
+
+          video1.play();
+          video2.play();
+        }
+      }
+
+      video1.addEventListener('timeupdate', () => {
+        if (Math.abs(video1.currentTime - video2.currentTime) > 0.1) {
+          video2.currentTime = video1.currentTime;
+        }
+      });
+
+      video2.addEventListener('timeupdate', () => {
+        if (Math.abs(video2.currentTime - video1.currentTime) > 0.1) {
+          video1.currentTime = video2.currentTime;
+        }
+      });
+
+      video1.addEventListener('ended', () => {
+        video2.currentTime = 0;
+        video2.play();
+      });
+
+      video2.addEventListener('ended', () => {
+        video1.currentTime = 0;
+        video1.play();
+      });
+    }
+  });
+</script>
+
+<script>
+  document.querySelectorAll('.twentytwenty-container').forEach(container => {
+    container.addEventListener('mousemove', (event) => {
+      const desc = container.querySelector('.desc');
+      if (desc) {
+        const descRect = desc.getBoundingClientRect();
+        const mouseX = event.clientX;
+
+        const x = mouseX - descRect.left;
+
+        desc.style.clipPath = `polygon(${Math.max(0, x + 2)}px 0, 100% 0, 100% 100%, ${Math.max(0, x + 2)}px 100%)`;
+      }
+    });
+  });
+</script>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+      <!-- <div class="column"> -->
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>3D super-resolution aims to reconstruct high-fidelity 3D models from low-resolution (LR) multi-view images. Early studies primarily focused on single-image super-resolution (SISR) models to upsample LR images into high-resolution images. However, these methods often lack view consistency because they operate independently on each image. Although various post-processing techniques have been extensively explored to mitigate these inconsistencies, they have yet to fully resolve the issues. In this paper, we perform a comprehensive study of 3D super-resolution by leveraging video super-resolution (VSR) models. By utilizing VSR models, we ensure a higher degree of spatial consistency and can reference surrounding spatial information, leading to more accurate and detailed reconstructions. Our findings reveal that VSR models can perform remarkably well even on sequences that lack precise spatial alignment. Given this observation, we propose a simple yet practical approach to align LR images without involving fine-tuning or generating `smooth' trajectory from the trained 3D models over LR images. The experimental results show that the surprisingly simple algorithms can achieve the state-of-the-art results of 3D super-resolution tasks on standard benchmark datasets, such as the NeRF-synthetic and MipNeRF-360 datasets.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <!-- <div class="column is-four-fifths"> -->
+      <div class="column">
+        <h2 class="title is-3">Method</h2>
+        <div class="content has-text-justified">
+          <p>
+            ProPainter comprises three key components: recurrent flow completion, dual-domain propagation, and mask-guided
+            sparse Transformer. First, we employ a highly efficient recurrent flow completion network to complete the corrupted flow
+            fields. We then perform propagation in both image and feature domains, which are jointly trained. This approach enables us to
+            explore correspondences from both global and local temporal frames, resulting in more reliable and effective propagation. The
+            subsequent mask-guided sparse Transformer blocks refine the propagated features using spatiotemporal attention, aided by a
+            sparse strategy that considers only a subset of the tokens. This enhances efficiency and reduces memory consumption, while
+            maintaining performance.
+          </p>
+          <div class="column">
+            <img src="./assets/images/SM_pipeline.jpg" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3" style="margin-bottom: 40px;">Quantitative Results</h2>
+        <div class="content has-text-justified">
+          <!-- First and Second Tables in the Same Row -->
+          <div class="columns">
+            <div class="column">
+              <p class="has-text-weight-bold has-text-centered">NeRF Synthetic Dataset</p>
+              <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: 5px;">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>PSNR&uarr;</th>
+                    <th>SSIM&uarr;</th>
+                    <th>LPIPS&darr;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Bicubic</td>
+                    <td class="numeric">27.56</td>
+                    <td class="numeric">0.9150</td>
+                    <td class="numeric">0.1040</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://github.com/JingyunLiang/SwinIR">SwinIR</a></td>
+                    <td class="numeric">30.77</td>
+                    <td class="numeric">0.9501</td>
+                    <td class="numeric">0.0550</td>
+                  </tr>
+                  <tr>
+                    <td>Render-SR</td>
+                    <td class="numeric">28.90</td>
+                    <td class="numeric">0.9346</td>
+                    <td class="numeric">0.0683</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://cwchenwang.github.io/NeRF-SR/">NeRF-SR</a></td>
+                    <td class="numeric">28.46</td>
+                    <td class="numeric">0.9210</td>
+                    <td class="numeric">0.0760</td>
+                  </tr>
+                  <tr>
+                    <td>ZS-SRT</td>
+                    <td class="numeric">29.69</td>
+                    <td class="numeric">0.9290</td>
+                    <td class="numeric">0.0690</td>
+                  </tr>
+                  <tr>
+                    <td>CROP</td>
+                    <td class="numeric">30.71</td>
+                    <td class="numeric">0.9459</td>
+                    <td class="numeric">0.0671</td>
+                  </tr>
+                  <tr>
+                    <td>FastSR-NeRF</td>
+                    <td class="numeric">30.47</td>
+                    <td class="numeric">0.9440</td>
+                    <td class="numeric">0.0750</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://github.com/leejielong/DiSR-NeRF">DiSR-NeRF</a></td>
+                    <td class="numeric">26.00</td>
+                    <td class="numeric">0.8898</td>
+                    <td class="numeric">0.1226</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS</a></td>
+                    <td class="numeric">30.83</td>
+                    <td class="numeric">0.9480</td>
+                    <td class="numeric">0.0560</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://chchnii.github.io/GaussianSR/">Gaussian-SR</a></td>
+                    <td class="numeric">28.37</td>
+                    <td class="numeric">0.9240</td>
+                    <td class="numeric">0.0870</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://supergaussian.github.io/">SuperGaussian</a></td>
+                    <td class="numeric">28.44</td>
+                    <td class="numeric">0.9459</td>
+                    <td class="numeric">0.0670</td>
+                  </tr>
+                  <tr>
+                    <td>Ours</td>
+                    <td class="numeric"><strong>31.41</strong></td>
+                    <td class="numeric"><strong>0.9520</strong></td>
+                    <td class="numeric"><strong>0.0540</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="column">
+              <p class="has-text-weight-bold has-text-centered">Mip-NeRF 360 Dataset</p>
+              <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth" style="margin-top: 5px;">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>PSNR&uarr;</th>
+                    <th>SSIM&uarr;</th>
+                    <th>LPIPS&darr;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Bicubic</td>
+                    <td class="numeric">26.22</td>
+                    <td class="numeric">0.7349</td>
+                    <td class="numeric">0.3290</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://github.com/JingyunLiang/SwinIR">SwinIR</a></td>
+                    <td class="numeric">26.80</td>
+                    <td class="numeric">0.7657</td>
+                    <td class="numeric">0.2873</td>
+                  </tr>
+                  <tr>
+                    <td><a href="https://github.com/XiangFeng66/SRGS">SRGS</a></td>
+                    <td class="numeric">26.88</td>
+                    <td class="numeric">0.7670</td>
+                    <td class="numeric">0.2860</td>
+                  </tr>
+                  <tr>
+                    <td>Ours</td>
+                    <td class="numeric"><strong>27.02</strong></td>
+                    <td class="numeric"><strong>0.7747</strong></td>
+                    <td class="numeric"><strong>0.2790</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <p>
+            Something
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column">
+        <h2 class="title is-3">Qualitative Results</h2>
+        <div class="content has-text-justified">
+          <!-- First Image -->
+          <div class="columns is-centered" style="margin-bottom: 30px;">
+            <div class="column is-full">
+              <figure>
+                <img src="./assets/images/appendix_qualitative_blender.jpg" 
+                     alt="Appendix Qualitative Blender" 
+                     style="width: 100%;">
+              </figure>
+            </div>
+          </div>
+
+          <!-- Second Image -->
+          <div class="columns is-centered" style="margin-bottom: 30px;">
+            <div class="column is-full">
+              <figure>
+                <img src="./assets/images/baseline_blender.jpg" 
+                     alt="Baseline Blender" 
+                     style="width: 100%;">
+              </figure>
+            </div>
+          </div>
+
+          <!-- Third Image -->
+          <div class="columns is-centered">
+            <div class="column is-full">
+              <figure>
+                <img src="./assets/images/baseline_mip360.jpg" 
+                     alt="Baseline Mip360" 
+                     style="width: 100%;">
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Baseline Comparison</h2>
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <label class="label">Select Baseline:</label>
+        <div class="select is-fullwidth">
+          <select id="baseline-selector">
+            <option value="SuperGaussian">SuperGaussian</option>
+            <option value="NeRF-SR">NeRF-SR</option>
+            <option value="DiSR-NeRF">DiSR-NeRF</option>
+            <option value="Render-SR">Render-SR</option>
+          </select>
+        </div>
+      </div>
+      <div class="column is-half">
+        <label class="label">Select Object:</label>
+        <div class="select is-fullwidth">
+          <select id="object-selector">
+            <option value="chair">Chair</option>
+            <option value="drums">Drums</option>
+            <option value="ficus">Ficus</option>
+            <option value="hotdog">Hotdog</option>
+            <option value="lego">Lego</option>
+            <option value="materials">Materials</option>
+            <option value="mic">Mic</option>
+            <option value="ship">Ship</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column">
+        <div class="videos-comparison">
+          <video id="baseline-video" muted autoplay loop width="49%" controls></video>
+          <video id="ours-video" muted autoplay loop width="49%" controls></video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+  .videos-comparison {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1%;
+  }
+  video {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+</style>
+
+<script>
+  const baselineSelector = document.getElementById("baseline-selector");
+  const objectSelector = document.getElementById("object-selector");
+  const baselineVideo = document.getElementById("baseline-video");
+  const oursVideo = document.getElementById("ours-video");
+
+  // SuperGaussian에서 제외할 옵션
+  const excludedObjects = {
+    SuperGaussian: ["lego", "materials"]
+  };
+
+  // 모든 가능한 객체 옵션
+  const allObjects = [
+    "chair", "drums", "ficus", "hotdog", "lego", "materials", "mic", "ship"
+  ];
+
+  function updateObjectOptions() {
+    const baseline = baselineSelector.value;
+    const excludeList = excludedObjects[baseline] || [];
+
+    // 기존 옵션 제거
+    while (objectSelector.options.length > 0) {
+      objectSelector.remove(0);
+    }
+
+    // 새로운 옵션 추가
+    allObjects.forEach(object => {
+      if (!excludeList.includes(object)) {
+        const option = document.createElement("option");
+        option.value = object;
+        option.textContent = object.charAt(0).toUpperCase() + object.slice(1);
+        objectSelector.appendChild(option);
+      }
+    });
+
+    // 첫 번째 옵션을 기본값으로 설정
+    objectSelector.selectedIndex = 0;
+    updateVideos(); // 비디오 업데이트 호출
+  }
+
+  function updateVideos() {
+    const baseline = baselineSelector.value;
+    const object = objectSelector.value;
+
+    // 비디오 소스 설정
+    baselineVideo.src = `./assets/video_blender/${baseline}/${baseline}_${object}.mp4`;
+    oursVideo.src = `./assets/video_blender/ours/ours_${object}.mp4`;
+
+    // 비디오 로드
+    baselineVideo.load();
+    oursVideo.load();
+    baselineVideo.onloadedmetadata = synchronizeVideos;
+    oursVideo.onloadedmetadata = synchronizeVideos;
+  }
+
+  function synchronizeVideos() {
+    const tolerance = 0.05; // 50ms 허용 오차
+    let syncing = false;
+
+    function checkSync() {
+      if (syncing) return;
+
+      const diff = Math.abs(baselineVideo.currentTime - oursVideo.currentTime);
+      if (diff > tolerance) {
+        syncing = true;
+        if (baselineVideo.currentTime > oursVideo.currentTime) {
+          oursVideo.currentTime = baselineVideo.currentTime;
+        } else {
+          baselineVideo.currentTime = oursVideo.currentTime;
+        }
+        syncing = false;
+      }
+    }
+
+    // 비디오 재생
+    baselineVideo.play();
+    oursVideo.play();
+
+    // 동기화 이벤트 추가
+    baselineVideo.addEventListener("timeupdate", checkSync);
+    oursVideo.addEventListener("timeupdate", checkSync);
+
+    // Pause/Play 동기화
+    [baselineVideo, oursVideo].forEach(video => {
+      video.addEventListener("pause", () => {
+        baselineVideo.pause();
+        oursVideo.pause();
+      });
+      video.addEventListener("play", () => {
+        baselineVideo.play();
+        oursVideo.play();
+      });
+    });
+  }
+
+  // 베이스라인 변경 시 객체 선택지 업데이트
+  baselineSelector.addEventListener("change", updateObjectOptions);
+  objectSelector.addEventListener("change", updateVideos);
+
+  // 초기 상태 설정
+  updateObjectOptions();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@InProceedings{zhou2023propainter,
+      title     = {{ProPainter}: Improving Propagation and Transformer for Video Inpainting},
+      author    = {Zhou, Shangchen and Li, Chongyi and Chan, Kelvin C.K and Loy, Chen Change},
+      booktitle = {Proceedings of IEEE International Conference on Computer Vision (ICCV)},
+      year      = {2023}
+    }</code></pre>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <div class="columns is-centered"><p>
+            This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io" target="_blank">nerfies</a> and <a href="https://github.com/sczhou/ProPainter_website" target="_blank">ProPainter</a>.
+          </p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+  <!-- custom js file  -->
+  <!-- <script defer src="./assets/js/fontawesome.all.min.js"></script> -->
+  <script src="./assets/js/bulma-carousel.min.js"></script>
+  <script src="./assets/js/bulma-slider.min.js"></script>
+  <script src="./assets/js/index.js"></script>
+  <script src="./assets/js/jquery.event.move.js"></script>
+  <script src="./assets/js/jquery.twentytwenty.js"></script>
+  <script>
+  $(function(){
+    $(".twentytwenty-container").twentytwenty();
+    // $(".twentytwenty-container", "#results-carousel").twentytwenty({default_offset_pct: 0.5, ratio: 0.5});
+  });
+  </script>
+</body>
+</html>
