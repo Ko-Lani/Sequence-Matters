@@ -479,23 +479,428 @@
 </section>
 
 
-
 <section class="section">
   <div class="container is-max-desktop">
-    <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-      <!-- <div class="column"> -->
-        <h2 class="title is-3">Video Models for 3D Super-Resolution</h2>
-        <div class="content has-text-justified">
-          <p> vs. SuperGaussian
+      <div class="column">
+        <h2 class="title is-3">Video Models in 3D Super-Resolution</h2>
+        
+        <!-- Image -->
+        <div class="image-container" style="margin-bottom: 20px;">
+          <img src="./assets/images/SISR_VSR.png" alt="SISR vs VSR" style="width: 100%; height: auto;">
+        </div>
+        
+        <!-- Text Description -->
+        <div class="content has-text-justified" style="margin-bottom: 20px;">
+          <p>
+            In previous studies, SISR (<strong>S</strong>ingle <strong>I</strong>mage <strong>S</strong>uper-<strong>R</strong>esolution) models individually upsampled 
+            each LR (low-resolution) multi-view image in separate runs. As a result, the upsampled images lack 3D consistency, leading to blurry details.
+          </p>
+          <p>
+            On the other hand, using VSR (<strong>V</strong>ideo <strong>S</strong>uper-<strong>R</strong>esolution) for 3D super-resolution tasks 
+            ensures that the temporal consistency in videos aligns the 3D spatial consistency to some extent. This not only improves 
+            view-to-view consistency but also gathers information from other views to enable more accurate and precise reconstruction.
           </p>
         </div>
+        <!-- Video Player -->
+        <div class="video-container">
+          <video id="videoPlayer" width="100%" autoplay muted>
+            <source src="./assets/videos/greedyalignment.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div class="content" style="text-align: right;">
+          <p> *click the video to play again! </p>
+        </div>
+        
+        <!-- Text Description -->
+        <div class="content has-text-justified" style="margin-bottom: 0px;">
+          <p>
+            <strong>SuperGaussian (1)</strong> is the only study that uses VSR models for 3D Super-Resolution. 
+            This model first constructs a low-resolution (LR) 3D representation through LR training and then 
+            renders smooth videos, which are fed as input to the VSR model.
+          </p>
+          <p>
+            However, this approach introduces unintended stripy and blob-like artifacts caused by Gaussian 
+            splats during the LR 3D training process in 3DGS. Consequently, the rendered videos deviate from 
+            the degradation that the VSR model expects, requiring extensive retraining of the VSR model.
+          </p>
+          <p>
+            Our approach <strong>(2)</strong> focuses on stitching the raw LR dataset into a video-like sequence without any transformation. 
+            By greedily connecting images with the closest feature or pose similarity, we can generate a video-like 
+            sequence from sparse data. This sequence is then used as input for the VSR model to perform upsampling.
+          </p>
+          <p>
+            This method allows us to use pretrained VSR models directly without modification while effectively 
+            addressing the aforementioned artifacts, resulting in significantly better performance. The visual comparison with <strong>SuperGaussian</strong> can be found below.
+          </p>
+        </div>
+
       </div>
     </div>
-    <!--/ Abstract. -->
   </div>
 </section>
+
+<script>
+  const video = document.getElementById('videoPlayer');
+
+  video.addEventListener('click', () => {
+    video.currentTime = 0; // 비디오를 처음으로 되돌림
+    video.play(); // 비디오 재생
+  });
+</script>
+
+
+
+
+
+
+
+
+<!-- First row -->
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <div class="container">
+      <h3 class="title is-5 publication-title" style="margin-bottom: 10px;">Comparison with SuperGaussian</h3>
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;LR&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_chair.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_chair.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left"> &nbsp;&nbsp;SG&nbsp;&nbsp;  </div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_drums.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_drums.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_ficus.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_ficus.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_hotdog.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_hotdog.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_lego.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_lego.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_materials.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_materials.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_mic.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_mic.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>          
+        </div>
+        <div class="item">
+          <div class="twentytwenty-container" data-orientation="horizontal" ratio="1">            
+            <div class="video">
+              <div class="desc_left">&nbsp;&nbsp;SG&nbsp;&nbsp;</div>
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/bicubic/bicubic_ship.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="video">
+              <div class="desc">Ours</div>
+              <div class="pause" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div>
+              <!-- <div class="full" style="margin-top: 2px; margin-right: 2px; height: 40px; width: 28px;"></div> -->
+              <video muted autoplay="autoplay" loop="loop" width="100%">
+                <source src="./assets/video_blender/ours/ours_ship.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item');
+  
+    items.forEach(item => {
+      const pauseButton = item.querySelector('.pause');
+      const fullButton = item.querySelector('.full');
+      const videos = item.querySelectorAll('video');
+  
+      if (pauseButton) {
+        pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+        pauseButton.style.backgroundSize = "cover";
+        pauseButton.style.backgroundRepeat = "no-repeat";
+        pauseButton.style.backgroundPosition = "center";
+  
+        pauseButton.addEventListener('mouseenter', () => {
+          pauseButton.style.cursor = 'pointer';
+        });
+  
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.style.backgroundImage.includes('play.png');
+          if (isPaused) {
+            pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            videos.forEach(video => video.play());
+          } else {
+            pauseButton.style.backgroundImage = "url('./assets/images/play.png')";
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+  
+      if (fullButton) {
+        fullButton.style.backgroundImage = "url('./assets/images/full.png')";
+        fullButton.style.backgroundSize = "cover";
+        fullButton.style.backgroundRepeat = "no-repeat";
+        fullButton.style.backgroundPosition = "center";
+        fullButton.addEventListener('mouseenter', () => {
+          fullButton.style.cursor = 'pointer';
+        });
+  
+        fullButton.addEventListener('click', () => {
+          const container = item;
+          if (container) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+              container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+      root: null,
+      threshold: 0.1,
+    };
+    
+    const items = document.querySelectorAll(".item");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const videos = entry.target.querySelectorAll("video");
+        const pauseButton = entry.target.querySelector(".pause");
+  
+        if (entry.isIntersecting) {
+          videos.forEach((video) => {
+            if (video.hasAttribute("data-src") && !video.src) {
+              video.src = video.getAttribute("data-src");
+              video.removeAttribute("data-src");
+            }
+            if (video.paused) {
+              video.play();
+              pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            }
+          });
+        } else {
+          videos.forEach((video) => {
+            if (!video.paused) {
+              video.pause();
+            }
+          });
+        }
+      });
+    }, observerOptions);
+  
+    items.forEach((item) => observer.observe(item));
+  });
+</script>
+
+<script>
+  const containers2 = document.querySelectorAll('.twentytwenty-container');
+  containers2.forEach((container) => {
+    const videos = container.querySelectorAll('video');
+    
+    if (videos.length === 2) {
+      const video1 = videos[0];
+      const video2 = videos[1];
+
+      let video1Loaded = false;
+      let video2Loaded = false;
+
+      video1.addEventListener('loadeddata', () => {
+        video1Loaded = true;
+        syncVideos();
+      });
+
+      video2.addEventListener('loadeddata', () => {
+        video2Loaded = true;
+        syncVideos();
+      });
+
+      function syncVideos() {
+        if (video1Loaded && video2Loaded) {
+          video1.currentTime = 0;
+          video2.currentTime = 0;
+
+          video1.play();
+          video2.play();
+        }
+      }
+
+      video1.addEventListener('timeupdate', () => {
+        if (Math.abs(video1.currentTime - video2.currentTime) > 0.1) {
+          video2.currentTime = video1.currentTime;
+        }
+      });
+
+      video2.addEventListener('timeupdate', () => {
+        if (Math.abs(video2.currentTime - video1.currentTime) > 0.1) {
+          video1.currentTime = video2.currentTime;
+        }
+      });
+
+      video1.addEventListener('ended', () => {
+        video2.currentTime = 0;
+        video2.play();
+      });
+
+      video2.addEventListener('ended', () => {
+        video1.currentTime = 0;
+        video1.play();
+      });
+    }
+  });
+</script>
+
+<script>
+  document.querySelectorAll('.twentytwenty-container').forEach(container => {
+    container.addEventListener('mousemove', (event) => {
+      const desc = container.querySelector('.desc');
+      if (desc) {
+        const descRect = desc.getBoundingClientRect();
+        const mouseX = event.clientX;
+
+        const x = mouseX - descRect.left;
+
+        desc.style.clipPath = `polygon(${Math.max(0, x + 2)}px 0, 100% 0, 100% 100%, ${Math.max(0, x + 2)}px 100%)`;
+      }
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -984,7 +1389,7 @@
     <h2 class="title">BibTeX</h2>
     <pre><code>@misc{ko2024sequencemattersharnessingvideo,
       title={Sequence Matters: Harnessing Video Models in Super-Resolution}, 
-      author={Hyun-kyu Ko and Dongheok Park and Youngin Park and Byeonghyeon Lee and Juhee Han and Eunbyung Park},
+      author={Ko, Hyun-kyu and Park, Dongheok and Park, Youngin and Lee, Byeonghyeon and Han, Juhee Han and Park, Eunbyung},
       booktitle={arXiv preprint arXiv:2412.11525},
       year={2024},
     }</code></pre>
