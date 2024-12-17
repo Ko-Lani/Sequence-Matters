@@ -709,7 +709,62 @@
   </p>
 </section>
 
+<script>
+  const containers2 = document.querySelectorAll('.twentytwenty-container');
+  containers2.forEach((container) => {
+    const videos = container.querySelectorAll('video');
+    
+    if (videos.length === 2) {
+      const video1 = videos[0];
+      const video2 = videos[1];
 
+      let video1Loaded = false;
+      let video2Loaded = false;
+
+      video1.addEventListener('loadeddata', () => {
+        video1Loaded = true;
+        syncVideos();
+      });
+
+      video2.addEventListener('loadeddata', () => {
+        video2Loaded = true;
+        syncVideos();
+      });
+
+      function syncVideos() {
+        if (video1Loaded && video2Loaded) {
+          video1.currentTime = 0;
+          video2.currentTime = 0;
+
+          video1.play();
+          video2.play();
+        }
+      }
+
+      video1.addEventListener('timeupdate', () => {
+        if (Math.abs(video1.currentTime - video2.currentTime) > 0.1) {
+          video2.currentTime = video1.currentTime;
+        }
+      });
+
+      video2.addEventListener('timeupdate', () => {
+        if (Math.abs(video2.currentTime - video1.currentTime) > 0.1) {
+          video1.currentTime = video2.currentTime;
+        }
+      });
+
+      video1.addEventListener('ended', () => {
+        video2.currentTime = 0;
+        video2.play();
+      });
+
+      video2.addEventListener('ended', () => {
+        video1.currentTime = 0;
+        video1.play();
+      });
+    }
+  });
+</script>
 
 
 <section class="section">
