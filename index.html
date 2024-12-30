@@ -725,7 +725,181 @@
   </p>
 </section>
 
+
+
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item');
+  
+    items.forEach(item => {
+      const pauseButton = item.querySelector('.pause');
+      const fullButton = item.querySelector('.full');
+      const videos = item.querySelectorAll('video');
+  
+      if (pauseButton) {
+        pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+        pauseButton.style.backgroundSize = "cover";
+        pauseButton.style.backgroundRepeat = "no-repeat";
+        pauseButton.style.backgroundPosition = "center";
+  
+        pauseButton.addEventListener('mouseenter', () => {
+          pauseButton.style.cursor = 'pointer';
+        });
+  
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.style.backgroundImage.includes('play.png');
+          if (isPaused) {
+            pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            videos.forEach(video => video.play());
+          } else {
+            pauseButton.style.backgroundImage = "url('./assets/images/play.png')";
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+  
+      if (fullButton) {
+        fullButton.style.backgroundImage = "url('./assets/images/full.png')";
+        fullButton.style.backgroundSize = "cover";
+        fullButton.style.backgroundRepeat = "no-repeat";
+        fullButton.style.backgroundPosition = "center";
+        fullButton.addEventListener('mouseenter', () => {
+          fullButton.style.cursor = 'pointer';
+        });
+  
+        fullButton.addEventListener('click', () => {
+          const container = item;
+          if (container) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+              container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  
+</script>
+
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observerOptions = {
+      root: null,
+      threshold: 0.1,
+    };
+    
+    const items = document.querySelectorAll(".item");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const videos = entry.target.querySelectorAll("video");
+        const pauseButton = entry.target.querySelector(".pause");
+  
+        if (entry.isIntersecting) {
+          videos.forEach((video) => {
+            if (video.hasAttribute("data-src") && !video.src) {
+              video.src = video.getAttribute("data-src");
+              video.removeAttribute("data-src");
+            }
+            if (video.paused) {
+              video.play();
+              pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            }
+          });
+        } else {
+          videos.forEach((video) => {
+            if (!video.paused) {
+              video.pause();
+            }
+          });
+        }
+      });
+    }, observerOptions);
+  
+    items.forEach((item) => observer.observe(item));
+  });
+</script>
+
+<script>
+  const containers = document.querySelectorAll('.twentytwenty-container');
+  containers.forEach((container) => {
+    const videos = container.querySelectorAll('video');
+    
+    if (videos.length === 2) {
+      const video1 = videos[0];
+      const video2 = videos[1];
+
+      let video1Loaded = false;
+      let video2Loaded = false;
+
+      video1.addEventListener('loadeddata', () => {
+        video1Loaded = true;
+        syncVideos();
+      });
+
+      video2.addEventListener('loadeddata', () => {
+        video2Loaded = true;
+        syncVideos();
+      });
+
+      function syncVideos() {
+        if (video1Loaded && video2Loaded) {
+          video1.currentTime = 0;
+          video2.currentTime = 0;
+
+          video1.play();
+          video2.play();
+        }
+      }
+
+      video1.addEventListener('timeupdate', () => {
+        if (Math.abs(video1.currentTime - video2.currentTime) > 0.1) {
+          video2.currentTime = video1.currentTime;
+        }
+      });
+
+      video2.addEventListener('timeupdate', () => {
+        if (Math.abs(video2.currentTime - video1.currentTime) > 0.1) {
+          video1.currentTime = video2.currentTime;
+        }
+      });
+
+      video1.addEventListener('ended', () => {
+        video2.currentTime = 0;
+        video2.play();
+      });
+
+      video2.addEventListener('ended', () => {
+        video1.currentTime = 0;
+        video1.play();
+      });
+    }
+  });
+</script>
+
+<script>
+  document.querySelectorAll('.twentytwenty-container').forEach(container => {
+    container.addEventListener('mousemove', (event) => {
+      const desc = container.querySelector('.desc');
+      if (desc) {
+        const descRect = desc.getBoundingClientRect();
+        const mouseX = event.clientX;
+
+        const x = mouseX - descRect.left;
+
+        desc.style.clipPath = `polygon(${Math.max(0, x + 2)}px 0, 100% 0, 100% 100%, ${Math.max(0, x + 2)}px 100%)`;
+      }
+    });
+  });
+</script>
+
+<!-- <script>
   const containers2 = document.querySelectorAll('.twentytwenty-container');
   containers2.forEach((container) => {
     const videos = container.querySelectorAll('video');
@@ -780,7 +954,7 @@
       });
     }
   });
-</script>
+</script> -->
 
 <section class="section">
   <div class="container is-max-desktop">
