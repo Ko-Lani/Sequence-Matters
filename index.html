@@ -355,7 +355,7 @@
 </script>
 
 
-
+<!-- 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const observerOptions = {
@@ -392,6 +392,65 @@
   
     items.forEach((item) => observer.observe(item));
   });
+</script> -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item');
+  
+    items.forEach(item => {
+      const pauseButton = item.querySelector('.pause');
+      const fullButton = item.querySelector('.full');
+      const videos = item.querySelectorAll('video');
+  
+      if (pauseButton) {
+        pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+        pauseButton.style.backgroundSize = "cover";
+        pauseButton.style.backgroundRepeat = "no-repeat";
+        pauseButton.style.backgroundPosition = "center";
+  
+        pauseButton.addEventListener('mouseenter', () => {
+          pauseButton.style.cursor = 'pointer';
+        });
+  
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.style.backgroundImage.includes('play.png');
+          if (isPaused) {
+            pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            videos.forEach(video => video.play());
+          } else {
+            pauseButton.style.backgroundImage = "url('./assets/images/play.png')";
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+  
+      if (fullButton) {
+        fullButton.style.backgroundImage = "url('./assets/images/full.png')";
+        fullButton.style.backgroundSize = "cover";
+        fullButton.style.backgroundRepeat = "no-repeat";
+        fullButton.style.backgroundPosition = "center";
+        fullButton.addEventListener('mouseenter', () => {
+          fullButton.style.cursor = 'pointer';
+        });
+  
+        fullButton.addEventListener('click', () => {
+          const container = item;
+          if (container) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+              container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  
 </script>
 
 <script>
@@ -726,7 +785,6 @@
 </section>
 
 
-
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const items = document.querySelectorAll('.item');
@@ -785,6 +843,66 @@
   
   
 </script>
+
+<!-- 
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const items = document.querySelectorAll('.item');
+  
+    items.forEach(item => {
+      const pauseButton = item.querySelector('.pause');
+      const fullButton = item.querySelector('.full');
+      const videos = item.querySelectorAll('video');
+  
+      if (pauseButton) {
+        pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+        pauseButton.style.backgroundSize = "cover";
+        pauseButton.style.backgroundRepeat = "no-repeat";
+        pauseButton.style.backgroundPosition = "center";
+  
+        pauseButton.addEventListener('mouseenter', () => {
+          pauseButton.style.cursor = 'pointer';
+        });
+  
+        pauseButton.addEventListener('click', () => {
+          const isPaused = pauseButton.style.backgroundImage.includes('play.png');
+          if (isPaused) {
+            pauseButton.style.backgroundImage = "url('./assets/images/pause.png')";
+            videos.forEach(video => video.play());
+          } else {
+            pauseButton.style.backgroundImage = "url('./assets/images/play.png')";
+            videos.forEach(video => video.pause());
+          }
+        });
+      }
+  
+      if (fullButton) {
+        fullButton.style.backgroundImage = "url('./assets/images/full.png')";
+        fullButton.style.backgroundSize = "cover";
+        fullButton.style.backgroundRepeat = "no-repeat";
+        fullButton.style.backgroundPosition = "center";
+        fullButton.addEventListener('mouseenter', () => {
+          fullButton.style.cursor = 'pointer';
+        });
+  
+        fullButton.addEventListener('click', () => {
+          const container = item;
+          if (container) {
+            if (container.requestFullscreen) {
+              container.requestFullscreen();
+            } else if (container.webkitRequestFullscreen) {
+              container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+              container.msRequestFullscreen();
+            }
+          }
+        });
+      }
+    });
+  });
+  
+  
+</script> -->
 
 
 
