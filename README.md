@@ -5,13 +5,13 @@ Feel free to clone this code for your own personal use.
 
 
 If you find this useful for your work please [star](https://github.com/DHPark98/SequenceMatters) and cite:
-```
-@misc{ko2024sequencemattersharnessingvideo,
-      title={Sequence Matters: Harnessing Video Models in Super-Resolution}, 
-      author={Hyun-kyu Ko and Dongheok Park and Youngin Park and Byeonghyeon Lee and Juhee Han and Eunbyung Park},
-      booktitle={arXiv preprint arXiv:2412.11525},
-      year={2024},
-    }
+```BibTeX
+@article{ko2024sequence,
+  title={Sequence Matters: Harnessing Video Models in Super-Resolution},
+  author={Ko, Hyun-kyu and Park, Dongheok and Park, Youngin and Lee, Byeonghyeon and Han, Juhee and Park, Eunbyung},
+  journal={arXiv preprint arXiv:2412.11525},
+  year={2024}
+}
 ```
 
 # Website License
